@@ -7,8 +7,10 @@ namespace FM_VAWP_Jiranek_Semestralka.Data;
 
 public partial class VAPW_PS_DrivesContext : DbContext
 {
-    public VAPW_PS_DrivesContext()
+    private readonly String Connect;
+    public VAPW_PS_DrivesContext(String Connect)
     {
+        this.Connect = Connect;
     }
 
     public VAPW_PS_DrivesContext(DbContextOptions<VAPW_PS_DrivesContext> options)
@@ -22,7 +24,7 @@ public partial class VAPW_PS_DrivesContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=147.230.21.212;Initial Catalog=VAPW_PS_Drives;User ID=vapw;Password=cv1k0;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer(Connect);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
