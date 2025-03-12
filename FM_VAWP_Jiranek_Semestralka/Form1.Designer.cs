@@ -23,6 +23,7 @@
 
         private void InitializeComponent()
         {
+
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -32,7 +33,6 @@
             panelDraw = new System.Windows.Forms.Panel();
             radioCurves = new System.Windows.Forms.RadioButton();
             radioSpeed = new System.Windows.Forms.RadioButton();
-
             SuspendLayout();
 
             // 
@@ -119,5 +119,6 @@
 
             ResumeLayout(false);
         }
+
     }
 }

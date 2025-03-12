@@ -12,7 +12,7 @@ namespace FM_VAWP_Jiranek_Semestralka
     public partial class Form1 : Form
     {
         private VAPW_PS_DrivesContext context;
-        private string drawMode = "zatáèení"; // nebo "rychlost"
+        private string drawMode = "zatï¿½ï¿½enï¿½"; // nebo "rychlost"
 
         public Form1()
         {
@@ -26,7 +26,7 @@ namespace FM_VAWP_Jiranek_Semestralka
         }
 
         /// <summary>
-        /// Naète záznamy jízd do ComboBoxu
+        /// Naï¿½te zï¿½znamy jï¿½zd do ComboBoxu
         /// </summary>
         private async Task LoadRecordings()
         {
@@ -38,7 +38,7 @@ namespace FM_VAWP_Jiranek_Semestralka
         }
 
         /// <summary>
-        /// Reakce na zmìnu výbìru jízdy v ComboBoxu
+        /// Reakce na zmï¿½nu vï¿½bï¿½ru jï¿½zdy v ComboBoxu
         /// </summary>
         private async void ComboBoxRecordings_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -52,7 +52,7 @@ namespace FM_VAWP_Jiranek_Semestralka
                                                    .ToListAsync();
 
                     listView1.Items.Clear();
-                    currentDriveData = driveData; // Uložit pro vykreslení
+                    currentDriveData = driveData; // Uloï¿½it pro vykreslenï¿½
 
                     foreach (var item in driveData)
                     {
@@ -63,7 +63,7 @@ namespace FM_VAWP_Jiranek_Semestralka
                         listView1.Items.Add(row);
                     }
 
-                    panelDraw.Invalidate(); // Pøekreslit trasu
+                    panelDraw.Invalidate(); // Pï¿½ekreslit trasu
                 }
             }
         }
@@ -78,23 +78,23 @@ namespace FM_VAWP_Jiranek_Semestralka
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.Clear(Color.White);
 
-            // Získání minimálních a maximálních hodnot souøadnic
+            // Zï¿½skï¿½nï¿½ minimï¿½lnï¿½ch a maximï¿½lnï¿½ch hodnot souï¿½adnic
             float minX = (float)currentDriveData.Min(d => d.LonRec.GetValueOrDefault());
             float minY = (float)currentDriveData.Min(d => d.LatRec.GetValueOrDefault());
             float maxX = (float)currentDriveData.Max(d => d.LonRec.GetValueOrDefault());
             float maxY = (float)currentDriveData.Max(d => d.LatRec.GetValueOrDefault());
 
-            // **Pøidáme okraj (margin) kolem trasy**
+            // **Pï¿½idï¿½me okraj (margin) kolem trasy**
             float margin = 10f;
 
-            // **Zmenšíme trasu (zvìtšíme mìøítko)**
+            // **Zmenï¿½ï¿½me trasu (zvï¿½tï¿½ï¿½me mï¿½ï¿½ï¿½tko)**
             float scaleX = (panelDraw.Width - margin * 2) / (maxX - minX + 0.00001f);
             float scaleY = (panelDraw.Height - margin * 2) / (maxY - minY + 0.00001f);
-            float scale = Math.Min(scaleX, scaleY) * 0.5f; // **Zmenšíme trasu na 80 % panelu**
+            float scale = Math.Min(scaleX, scaleY) * 0.5f; // **Zmenï¿½ï¿½me trasu na 80 % panelu**
 
 
-            // **Posuneme trasu doleva tím, že dáme menší offsetX**
-            float offsetX = 50;  // **Negativní hodnota posouvá trasu doleva**
+            // **Posuneme trasu doleva tï¿½m, ï¿½e dï¿½me menï¿½ï¿½ offsetX**
+            float offsetX = 50;  // **Negativnï¿½ hodnota posouvï¿½ trasu doleva**
             float offsetY = (panelDraw.Height - (maxY - minY) * scale) / 2;
 
             Pen linePen = new Pen(Color.Blue, 2);
@@ -109,19 +109,22 @@ namespace FM_VAWP_Jiranek_Semestralka
                 g.DrawLine(linePen, x1, y1, x2, y2);
             }
 
-            // Zvýraznìní prvního a posledního bodu
+            // Zvï¿½raznï¿½nï¿½ prvnï¿½ho a poslednï¿½ho bodu
             g.FillEllipse(Brushes.Green, ((float)currentDriveData[0].LonRec.GetValueOrDefault() - minX) * scale + offsetX - 5,
                                        panelDraw.Height - (((float)currentDriveData[0].LatRec.GetValueOrDefault() - minY) * scale + offsetY) - 5, 10, 10);
             g.FillEllipse(Brushes.Red, ((float)currentDriveData[^1].LonRec.GetValueOrDefault() - minX) * scale + offsetX - 5,
                                      panelDraw.Height - (((float)currentDriveData[^1].LatRec.GetValueOrDefault() - minY) * scale + offsetY) - 5, 10, 10);
         }
 
+        }
 
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Bude implementováno pozdìji
+            // Bude implementovï¿½no pozdï¿½ji
         }
     }
 }
