@@ -9,7 +9,8 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ComboBox comboBoxRecordings;
         private System.Windows.Forms.Panel panelDraw;
-
+        private System.Windows.Forms.RadioButton radioCurves;
+        private System.Windows.Forms.RadioButton radioSpeed;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,23 +30,27 @@
             listView1 = new System.Windows.Forms.ListView();
             comboBoxRecordings = new System.Windows.Forms.ComboBox();
             panelDraw = new System.Windows.Forms.Panel();
-            RadioButton radioCurves = new RadioButton();
-
+            radioCurves = new System.Windows.Forms.RadioButton();
+            radioSpeed = new System.Windows.Forms.RadioButton();
 
             SuspendLayout();
 
             // 
-            // tableLayoutPanel1 (Levý panel)
+            // tableLayoutPanel1 (Levý panel - výběr jízdy a seznam bodů)
             // 
             tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize)); // ComboBox nahoře
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F)); // ListView zabere zbytek
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize)); // RadioButton 1
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize)); // RadioButton 2
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             tableLayoutPanel1.Width = 350;
             tableLayoutPanel1.Controls.Add(comboBoxRecordings, 0, 0);
             tableLayoutPanel1.Controls.Add(listView1, 0, 1);
+            tableLayoutPanel1.Controls.Add(radioCurves, 0, 2);
+            tableLayoutPanel1.Controls.Add(radioSpeed, 0, 3);
 
             // 
             // comboBoxRecordings (Výběr jízdy)
@@ -65,26 +70,29 @@
             listView1.Columns.Add("Lat", 100);
             listView1.Columns.Add("Lon", 100);
             listView1.Columns.Add("Speed", 80);
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
 
             //
-            // Draw panel
+            // panelDraw (Střední část - vykreslení trasy)
             //
             panelDraw = new System.Windows.Forms.Panel();
             panelDraw.Dock = System.Windows.Forms.DockStyle.Fill;
             panelDraw.BackColor = System.Drawing.Color.White;
             panelDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDraw_Paint);
             panelDraw.AutoScroll = false;
-            panelDraw.AutoScrollMinSize = new Size(1000, 1000);
+
+            // 
+            // radioCurves (Režim zatáčení)
+            // 
             radioCurves.Text = "Zatáčení";
             radioCurves.Checked = true;
             radioCurves.CheckedChanged += (s, e) => { drawMode = "zatáčení"; panelDraw.Invalidate(); };
 
-            RadioButton radioSpeed = new RadioButton();
+            // 
+            // radioSpeed (Režim rychlosti)
+            // 
             radioSpeed.Text = "Rychlost";
             radioSpeed.CheckedChanged += (s, e) => { drawMode = "rychlost"; panelDraw.Invalidate(); };
-
-            tableLayoutPanel1.Controls.Add(radioCurves, 0, 2);
-            tableLayoutPanel1.Controls.Add(radioSpeed, 0, 3);
 
             // 
             // tableLayoutPanel2 (Střední panel - vykreslení trasy)
