@@ -9,7 +9,11 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ComboBox comboBoxRecordings;
         private System.Windows.Forms.Panel panelDraw;
-
+        private System.Windows.Forms.Panel panelDetails;
+        private System.Windows.Forms.Label labelSpeed;
+        private System.Windows.Forms.Label labelRoll;
+        private System.Windows.Forms.Label labelAcceleration;
+        private System.Windows.Forms.Panel panelBike;
 
         protected override void Dispose(bool disposing)
         {
@@ -22,7 +26,6 @@
 
         private void InitializeComponent()
         {
-
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -30,21 +33,34 @@
             listView1 = new System.Windows.Forms.ListView();
             comboBoxRecordings = new System.Windows.Forms.ComboBox();
             panelDraw = new System.Windows.Forms.Panel();
+            panelDetails = new System.Windows.Forms.Panel();
+            labelSpeed = new System.Windows.Forms.Label();
+            labelRoll = new System.Windows.Forms.Label();
+            labelAcceleration = new System.Windows.Forms.Label();
+            panelBike = new System.Windows.Forms.Panel();
+
             RadioButton radioCurves = new RadioButton();
+            RadioButton radioSpeed = new RadioButton();
+            RadioButton radioNormal = new RadioButton();
 
-
-            radioCurves = new System.Windows.Forms.RadioButton();
-            radioSpeed = new System.Windows.Forms.RadioButton();
             SuspendLayout();
+            Button btnSettings = new Button();
+            btnSettings.Text = "Nastavení";
+            btnSettings.Click += (s, e) =>
+            {
+                OpenSettingsDialog();
+            };
 
+            btnSettings.Dock = DockStyle.Top; // Umístění tlačítka na horní část okna
+            this.Controls.Add(btnSettings);
             // 
             // tableLayoutPanel1 (Levý panel)
             // 
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize)); // ComboBox nahoře
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F)); // ListView zabere zbytek
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             tableLayoutPanel1.Width = 350;
             tableLayoutPanel1.Controls.Add(comboBoxRecordings, 0, 0);
@@ -68,26 +84,33 @@
             listView1.Columns.Add("Lat", 100);
             listView1.Columns.Add("Lon", 100);
             listView1.Columns.Add("Speed", 80);
+            listView1.SelectedIndexChanged += new System.EventHandler(listView1_SelectedIndexChanged);
 
             //
             // Draw panel
             //
-            panelDraw = new System.Windows.Forms.Panel();
             panelDraw.Dock = System.Windows.Forms.DockStyle.Fill;
             panelDraw.BackColor = System.Drawing.Color.White;
             panelDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDraw_Paint);
             panelDraw.AutoScroll = false;
-            panelDraw.AutoScrollMinSize = new Size(1000, 1000);
+            panelDraw.AutoScrollMinSize = new System.Drawing.Size(800, 800); // Menší vykreslení
+
+            // 
+            // Přepínače režimů vykreslování
+            // 
             radioCurves.Text = "Zatáčení";
             radioCurves.Checked = true;
             radioCurves.CheckedChanged += (s, e) => { drawMode = "zatáčení"; panelDraw.Invalidate(); };
 
-            RadioButton radioSpeed = new RadioButton();
             radioSpeed.Text = "Rychlost";
             radioSpeed.CheckedChanged += (s, e) => { drawMode = "rychlost"; panelDraw.Invalidate(); };
 
+            radioNormal.Text = "Normální";
+            radioNormal.CheckedChanged += (s, e) => { drawMode = "normální"; panelDraw.Invalidate(); };
+
             tableLayoutPanel1.Controls.Add(radioCurves, 0, 2);
             tableLayoutPanel1.Controls.Add(radioSpeed, 0, 3);
+            tableLayoutPanel1.Controls.Add(radioNormal, 0, 4);
 
             // 
             // tableLayoutPanel2 (Střední panel - vykreslení trasy)
@@ -100,6 +123,42 @@
             // 
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
             tableLayoutPanel3.Width = 300;
+            tableLayoutPanel3.Controls.Add(panelDetails);
+            tableLayoutPanel3.Controls.Add(panelBike);
+
+            // 
+            // panelDetails (Detail bodu - zobrazení informací)
+            // 
+            panelDetails.Dock = System.Windows.Forms.DockStyle.Top;
+            panelDetails.Height = 100;
+            panelDetails.Controls.Add(labelSpeed);
+            panelDetails.Controls.Add(labelRoll);
+            panelDetails.Controls.Add(labelAcceleration);
+
+            // 
+            // labelSpeed (Zobrazení rychlosti)
+            // 
+            labelSpeed.Text = "Rychlost: 0 km/h";
+            labelSpeed.Dock = System.Windows.Forms.DockStyle.Top;
+
+            // 
+            // labelRoll (Zobrazení náklonu)
+            // 
+            labelRoll.Text = "Náklon: 0°";
+            labelRoll.Dock = System.Windows.Forms.DockStyle.Top;
+
+            // 
+            // labelAcceleration (Zobrazení akcelerace)
+            // 
+            labelAcceleration.Text = "Akcelerace: 0 m/s²";
+            labelAcceleration.Dock = System.Windows.Forms.DockStyle.Top;
+
+            // 
+            // panelBike (Vizualizace motocyklu)
+            // 
+            panelBike.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelBike.BackColor = System.Drawing.Color.LightGray;
+            panelBike.Paint += new System.Windows.Forms.PaintEventHandler(this.panelBike_Paint);
 
             // 
             // Form1 (Hlavní okno)
@@ -114,6 +173,5 @@
 
             ResumeLayout(false);
         }
-
     }
 }
